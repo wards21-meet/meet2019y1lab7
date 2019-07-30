@@ -71,7 +71,9 @@ RIGHT_EDGE = 400
 LEFT_EDGE = -400
 
 
-snake.direction="up"
+
+
+snake.direction="Right"
 
 def up():
     snake.direction="Up"
@@ -124,8 +126,28 @@ for this_food_pos in food_pos :
     gg=food.stamp()
     food_stamps.append(gg)
 
-turtle.hideturtle()
+food.hideturtle()
+
+
+def make_food():
+    #The screen positions go from -SIZE/2 to +SIZE/2
+    #But we need to make food pieces only appear on game squares
+    #So we cut up the game board into multiples of SQUARE_SIZE.
+    min_x=-int(SIZE_X/2/SQUARE_SIZE)+1
+    max_x=int(SIZE_X/2/SQUARE_SIZE)-1
+    min_y=-int(SIZE_Y/2/SQUARE_SIZE)+1
+    max_y=int(SIZE_Y/2/SQUARE_SIZE)-1
     
+    #Pick a position that is a random multiple of SQUARE_SIZE
+    food_x = random.randint(min_x,max_x)*SQUARE_SIZE
+    food_y = random.randint(min_y,max_y)*SQUARE_SIZE
+
+    food.goto(food_x,food_y)
+    food_pos.append(food.pos())
+    food_stamp=food.stamp()
+    food_stamps.append(food_stamp)
+    print("I added one food")
+
 
 
 
@@ -152,6 +174,21 @@ def move_snake():
         
     new_stamp()
     remove_tail()
+
+    
+    #If snake is on top of food item
+    if snake.pos() in food_pos:
+        food_index=food_pos.index(snake.pos()) #What does this do?
+        food.clearstamp(food_stamps[food_index]) #Remove eaten food stamp
+        food_pos.pop(food_index) #Remove eaten food position
+        food_stamps.pop(food_index) #Remove eaten food stamp
+        print("You have eaten the food!")
+
+        
+    elif snake.pos() in pos_list[0:-1]:
+        print("you hit yourself! Game over!")
+        quit()
+
     
     #Add new lines to the end of the function
     #Grab position of snake
@@ -173,33 +210,19 @@ def move_snake():
          print("you hit the down edge! Game over!")
          quit()
 
+
      ######## SPECIAL PLACE - Remember it for Part 5
 
-    #If snake is on top of food item
-    if snake.pos() in food_pos:
-        food_index=food_pos.index(snake.pos()) #What does this do?
-        food.clearstamp(food_stamps[food_index]) #Remove eaten food stamp
-        food_pos.pop(food_index) #Remove eaten food position
-        food_stamps.pop(food_index) #Remove eaten food stamp
-        print("You have eaten the food!")
+   
     
-    #HINT: This if statement may be useful for
+
+    
+    if len(food_stamps) <= 6:
+        make_food()
+
+
 
     turtle.ontimer(move_snake,TIME_STEP)
-
-def make_food():
-    #The screen positions go from -SIZE/2 to +SIZE/2
-    #But we need to make food pieces only appear on game squares
-    #So we cut up the game board into multiples of SQUARE_SIZE.
-    min_x=-int(SIZE_X/2/SQUARE_SIZE)+1
-    max_x=int(SIZE_X/2/SQUARE_SIZE)-1
-    min_y=-int(SIZE_Y/2/SQUARE_SIZE)+1
-    max_y=int(SIZE_Y/2/SQUARE_SIZE)-1
-    
-    #Pick a position that is a random multiple of SQUARE_SIZE
-    food_x = random.randint(min_x,max_x)*SQUARE_SIZE
-    food_y = random.randint(min_y,max_y)*SQUARE_SIZE
-    
 
    
 
