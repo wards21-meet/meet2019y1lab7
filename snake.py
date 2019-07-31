@@ -2,6 +2,8 @@ import turtle
 import random #We'll need this later in the lab
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
+turtle.bgcolor('green')
+turtle.color('red')
 
 SIZE_X=800
 SIZE_Y=500
@@ -10,7 +12,7 @@ turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 10
+START_LENGTH = 6
 TIME_STEP = 100
 
 #Initialize lists
@@ -25,6 +27,8 @@ snake.shape("square")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
+
+
 
 
 #Function to draw a part of the snake on the screen
@@ -54,6 +58,9 @@ for i in range(START_LENGTH):
     x_pos+=SQUARE_SIZE
 
     snake.goto(x_pos,y_pos) #Move snake to new (x,y)
+
+
+
    
     #Now draw the new snake part on the screen (hint, you have a 
     #function to do this
@@ -183,6 +190,13 @@ def move_snake():
         food_pos.pop(food_index) #Remove eaten food position
         food_stamps.pop(food_index) #Remove eaten food stamp
         print("You have eaten the food!")
+        new_stamp()
+        bgcolors=('blue','green','gold','yellow','purple','brown','black','pink')
+        good=random.choice(bgcolors)
+        turtle.bgcolor(good)
+        
+            
+
 
         
     elif snake.pos() in pos_list[0:-1]:
@@ -223,6 +237,12 @@ def move_snake():
 
 
     turtle.ontimer(move_snake,TIME_STEP)
+
+
+    
+
+
+
 
    
 
