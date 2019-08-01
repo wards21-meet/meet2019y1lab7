@@ -1,9 +1,16 @@
+
 import turtle
 import random #We'll need this later in the lab
+from pygame import mixer # Load the required library
+
+mixer.init()
+mixer.music.load('fire')
+mixer.music.play()
 
 turtle.tracer(1,0) #This helps the turtle move more smoothly
 turtle.bgcolor('green')
 turtle.color('red')
+turtle.pencolor('black')
 
 SIZE_X=800
 SIZE_Y=500
@@ -12,9 +19,8 @@ turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 6
+START_LENGTH = 5
 TIME_STEP = 100
-
 #Initialize lists
 pos_list = []
 stamp_list = []
@@ -23,7 +29,7 @@ food_stamps = []
 
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
-snake.shape("square")
+snake.shape("circle")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
@@ -156,7 +162,7 @@ def make_food():
     print("I added one food")
 
 
-
+score=0
 
 
 def move_snake():
@@ -181,7 +187,11 @@ def move_snake():
         
     new_stamp()
     remove_tail()
-
+    
+    
+    
+    
+    global score
     
     #If snake is on top of food item
     if snake.pos() in food_pos:
@@ -191,17 +201,24 @@ def move_snake():
         food_stamps.pop(food_index) #Remove eaten food stamp
         print("You have eaten the food!")
         new_stamp()
-        bgcolors=('blue','green','gold','yellow','purple','brown','black','pink')
+        bgcolors=('blue','green','gold','yellow','purple','brown','Royal Blue','pink','Cyan','Dark Violet','Medium Sea Green')
         good=random.choice(bgcolors)
         turtle.bgcolor(good)
+        score=score+1
+        turtle.undo()
+        turtle.penup()
+        turtle.goto(-398,200)
+        turtle.pendown()
+        turtle.write( "my score is: " +  str(score), False, align="left", font=("arial",20, "normal"))
         
-            
+       
 
 
-        
+    
     elif snake.pos() in pos_list[0:-1]:
         print("you hit yourself! Game over!")
         quit()
+                    
 
     
     #Add new lines to the end of the function
@@ -235,6 +252,8 @@ def move_snake():
         make_food()
 
 
+    
+
 
     turtle.ontimer(move_snake,TIME_STEP)
 
@@ -244,7 +263,7 @@ def move_snake():
 
 
 
-   
+
 
 
 
